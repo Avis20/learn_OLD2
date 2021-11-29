@@ -1,0 +1,8 @@
+---
+ansible:
+  image: generik/ansible
+  command: "ansible-playbook identidock.yml -u vagrant"
+  volumes:
+    - ../id_rsa_keys/:/root/.ssh/:rw
+    - ./identidock.yml:/ansible/identidock.yml
+    - ./hosts:/etc/ansible/hosts

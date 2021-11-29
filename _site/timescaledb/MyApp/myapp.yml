@@ -1,0 +1,23 @@
+# rename this file to myapp.yml and put a ':' after 'name' if
+# you want to use YAML like in old versions of Catalyst
+test: 1
+
+Model::TestDB:
+    connect_info:
+    # - dbi:Pg:dbname=timescaledb_test;host=localhost;port=5432;application_name=fonmix
+    # - postgres
+    # - '1234'
+    - dbi:Pg:dbname=test_db;host=tsdb-2468e8cb-orlov-a36f.a.timescaledb.io;port=26913;application_name=test
+    - tsdbadmin
+    - ai73v2ey3mqtgmwh
+    -   AutoCommit: 1
+        disable_sth_caching: 1
+        name_sep: .
+        pg_enable_utf8: 1
+        pg_server_prepare: 0
+        quote_char: '"'
+    db: fonmix
+    host: qa01.ams.d-net.pro
+    pass: FM3yaRBY15bV
+    port: 6432
+    user: fonmix

@@ -1,0 +1,7 @@
+**/logs
+**/.vagrant
+**/.idea
+**/python/my_env
+**/python/venv/
+**/__pycache__
+**/venv

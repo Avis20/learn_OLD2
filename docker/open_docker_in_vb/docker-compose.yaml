@@ -1,0 +1,8 @@
+version: '3.5'
+services:
+
+  nginx_test:
+    image: nginx
+    container_name: nginx_test
+    ports:
+      - "192.168.1.66:80:80"

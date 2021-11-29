@@ -1,0 +1,22 @@
+- hosts: identidock
+  sudo: yes
+  tasks:
+    - name: redis container
+      docker_container:
+        name: redis
+        image: redis:3
+        state: present
+        restart_policy: always
+
+
+# - name: Re-create a redis container
+#   docker_container:
+#     name: myredis
+#     image: redis
+#     command: redis-server --appendonly yes
+#     state: present
+#     recreate: yes
+#     exposed_ports:
+#       - 6379
+#     volumes_from:
+#       - mydata

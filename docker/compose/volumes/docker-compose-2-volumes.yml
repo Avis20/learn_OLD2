@@ -1,0 +1,6 @@
+---
+test-app:
+  image: ubuntu:bionic
+  command: 'bash -c "ls -l /tmp/ && echo 1 > /tmp/test-app/aaa && ls -l /tmp/test-app/"'
+  volumes:
+    - ./dir_in_host:/tmp/test-app:ro

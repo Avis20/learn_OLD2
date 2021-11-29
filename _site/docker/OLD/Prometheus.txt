@@ -1,0 +1,4 @@
+docker run --rm -d --name prometheus -p 9090:9090 \
+-v $(pwd)/prometheus.conf:/etc/prometheus/prometheus.yml \
+--link cadvisor:cadvisor \
+prom/prometheus

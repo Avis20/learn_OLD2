@@ -1,0 +1,6 @@
+---
+test-app:
+  image: ubuntu:bionic
+  command: 'bash -c "echo 1 > /tmp/test-app/hello && ls -l /tmp/test-app && /bin/sleep 1"'
+  volumes:
+    - /tmp/test-app

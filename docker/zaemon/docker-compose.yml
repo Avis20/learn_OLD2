@@ -1,0 +1,19 @@
+version: '2'
+services:
+
+  postgres-data:
+    container_name: postgres-datastore
+    image: busybox
+    volumes:
+      - /var/lib/postgresql/data
+  
+  postgres:
+    container_name: postgres-db
+    build: .
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes_from:
+      - postgres-data

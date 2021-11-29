@@ -1,0 +1,51 @@
+version: '3'
+services:
+
+  consul-1:
+    image: gliderlabs/consul
+    container_name: consul-1
+    ports:
+      - "8300:8300"
+      - "8301:8301"
+      - "8301:8301/udp"
+      - "8302:8302"
+      - "8400:8400"
+      - "8500:8500"
+      - "3.3.3.2:53:8600/udp"
+    env_file: .env
+    volumes:
+      - ./start-consul-agent.sh:/start-consul-agent.sh
+    entrypoint: /start-consul-agent.sh
+
+  registrator:
+    image: gliderlabs/registrator
+    container_name: registrator
+    links:
+      - "consul-1"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    command: consul://consul-1:8500
+
+  # identiproxy:
+  #   build:
+  #     context: ./identiproject/identiproxy
+  #     dockerfile: Dockerfile
+  #   container_name: identiproxy
+  #   ports:
+  #     - "8000:80"
+  #   links:
+  #     - "identidock"
+
+  # identidock:
+  #   build:
+  #     context: ./identiproject/identidock
+  #     dockerfile: Dockerfile
+  #   container_name: identidock
+  #   volumes:
+  #     - ./identiproject/identidock/app:/app
+  #   links:
+  #     - "dnmonster"
+
+  # dnmonster:
+  #   image: amouat/dnmonster:1.0
+  #   container_name: identidnmonster

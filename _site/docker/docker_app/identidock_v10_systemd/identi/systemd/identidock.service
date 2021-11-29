@@ -1,0 +1,14 @@
+[Unit]
+Description=Docker Container for Identidock
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+WorkingDirectory=/home/vagrant/project
+ExecStartPre=/usr/local/bin/docker-compose down -v
+ExecStart=/usr/local/bin/docker-compose up -d
+ExecStop=/usr/local/bin/docker-compose down
+
+[Install]
+WantedBy=multi-user.target

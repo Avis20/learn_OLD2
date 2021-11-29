@@ -1,0 +1,14 @@
+version: '2'
+services:
+
+  my-app2:
+    build: ./
+    container_name: my-app2
+    env_file:
+      - ./environment.txt
+    environment:
+      PORT: 80
+    volumes:
+      - ./Avis20:/Avis20
+    # command: unbuffer perl /home/projects/project/script/crm_hex_server.pl -p 7080 -rd --rd 1
+

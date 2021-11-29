@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello Vue!</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="./vue.js"></script> -->
+</head>
+<body>
+    <div id="app">
+        <p>{{message}}</p>
+    </div>
+
+    <div id="app-3">
+      <span v-if="seen">Сейчас меня видно</span>
+    </div>
+
+    <script>
+
+const NotFound = { template: '<p>Страница не найдена</p>' }
+const Home = { template: '<p>главная</p>' }
+const About = { template: '<p>о нас</p>' }
+
+const routes = {
+  '/': Home,
+  '/about': About
+}
+
+new Vue({
+  el: '#app',
+  data: {
+    currentRoute: window.location.pathname
+  },
+  computed: {
+    ViewComponent () {
+      return routes[this.currentRoute] || NotFound
+    }
+  },
+  render (h) { return h(this.ViewComponent) }
+})
+
+    </script>
+</body>
+</html>

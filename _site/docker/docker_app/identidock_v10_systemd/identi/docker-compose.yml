@@ -1,0 +1,31 @@
+version: '3'
+services:
+
+  identiproxy:
+    build:
+      context: ./identiproxy
+      dockerfile: Dockerfile
+    container_name: identiproxy
+    ports:
+      - "8000:80"
+    links:
+      - "identidock"
+
+  identidock:
+    build:
+      context: ./identidock
+      dockerfile: Dockerfile
+    container_name: identidock
+    volumes:
+      - ./identidock/app:/app
+    links:
+      - "dnmonster"
+      - "redis"
+
+  dnmonster:
+    image: amouat/dnmonster:1.0
+    container_name: identidnmonster
+
+  redis:
+    image: redis:3.0
+    container_name: identiredis

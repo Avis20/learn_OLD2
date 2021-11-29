@@ -1,0 +1,12 @@
+INFO:root:Started
+INFO:root:Doing something
+INFO:root:Finished
+INFO:root:Started
+INFO:root:Doing something
+INFO:root:Finished
+2021-06-20 11:02:54,300 - root - INFO - myapp : 9 - Started
+2021-06-20 11:02:54,300 - root - INFO - mylib : 6 - Doing something
+2021-06-20 11:02:54,300 - root - INFO - myapp : 11 - Finished
+2021-06-20 11:05:00,964 - root - INFO - myapp : 9 - Started
+2021-06-20 11:05:00,964 - root - INFO - mylib : 6 - Doing something
+2021-06-20 11:05:00,964 - root - INFO - myapp : 11 - Finished

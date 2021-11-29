@@ -1,0 +1,47 @@
+version: '3'
+networks:
+  local:
+    ipam:
+      driver: default
+      config:
+        - subnet: 11.0.0.0/24
+
+services:
+
+  test_foo:
+    build:
+      context: ./Foo
+      dockerfile: Dockerfile
+    container_name: myfoo
+    environment:
+      - SERVICE_NAME=myfoo-local
+      - SERVICE_TAGS=www
+    ports:
+      - "80:3001"
+    entrypoint: perl /home/project/Foo/script/server.pl -rd -p 3001
+    networks:
+      local:
+        aliases:
+          - myfoo.local
+
+  consul:
+    image: gliderlabs/consul
+    container_name: consul
+    ports:
+      - "8300:8300"
+      - "8301:8301"
+      - "8301:8301/udp"
+      - "8302:8302"
+      - "8400:8400"
+      - "8500:8500"
+      - "127.0.0.1:53:8600/udp"
+    command: "agent -data-dir /tmp/consul -server -retry-join consul-server-bootstrap -client 0.0.0.0 -bootstrap-expect 1"
+
+  registrator:
+    image: gliderlabs/registrator:master
+    container_name: registrator
+    links:
+      - "consul"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    command: consul://consul:8500

@@ -1,0 +1,3 @@
+HOSTA=3.3.3.2
+HOSTB=3.3.3.3
+ETCD_MACHINES="http://${HOSTA}:2379,http://${HOSTB}:2379"

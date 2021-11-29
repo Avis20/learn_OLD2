@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  myapp:
+    build: .
+    image: avis20/myapp
+    ports:
+      - "81:3000"
+    networks:
+      - mynet
+    deploy:
+      replicas: 3
+
+  mynginx:
+    image: nginx
+    ports:
+      - "80:80"
+    networks:
+      - mynet
+
+  myappredis:
+    image: redis:3
+    ports:
+      - "6379:6379"
+    networks:
+      - mynet
+
+networks:
+  mynet:

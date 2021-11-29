@@ -1,0 +1,3 @@
+
+DBIC_TRACE=1
+DBIC_TRACE_PROFILE=console

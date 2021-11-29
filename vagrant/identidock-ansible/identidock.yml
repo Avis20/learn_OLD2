@@ -1,0 +1,2 @@
+- hosts: identidock
+  sudo: yes

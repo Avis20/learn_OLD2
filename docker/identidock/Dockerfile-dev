@@ -1,0 +1,7 @@
+from python:3.7
+
+run pip install Flask==0.10.1
+workdir /app
+copy app /app
+
+cmd python identidock.py

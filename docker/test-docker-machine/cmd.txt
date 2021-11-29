@@ -1,0 +1,104 @@
+$ catalyst.pl MyApp
+...
+docker-machine create --driver virtualbox dev1
+...
+$ docker-machine ssh dev1
+...
+$ docker swarm init
+Error response from daemon: could not choose an IP address to advertise since this system has multiple addresses on different interfaces (10.0.2.15 on eth0 and 192.168.99.101 on eth1) - specify one with --advertise-addr
+
+// просто init не работает нужно указать сеть
+docker@dev1:~$ docker swarm init --advertise-addr eth1
+// получаем ключ
+docker swarm join --token SWMTKN-1-00k2eh79y4aoywf0yb1loq93jzhe4r8a79g9ssmp6f69ct60n8-59oyuy1gpmnbw2niul4gf0k9y 192.168.99.101:2377
+
+$ docker-machine create --driver virtualbox dev2
+...
+$ docker-machine ssh dev2
+// ctrl+v - docker swarm join --token SWMTKN-1-00k2eh79y4aoywf0yb1loq93jzhe4r8a79g9ssmp6f69ct60n8-59oyuy1gpmnbw2niul4gf0k9y 192.168.99.101:2377
+
+                                                                                                                                     
+$ docker-machine env dev1
+...
+$ eval $(docker-machine env dev1)
+...
+$ docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+iy86ui6grn1rnm0rnhzr9pmap *   dev1                Ready               Active              Leader              19.03.5
+lhezg06vfsyygykwabkvk5dgk     dev2                Ready               Active                                  19.03.5
+
+
+// хм, надо пушнуть
+$ docker stack deploy -c docker-compose.yml myapp
+Ignoring unsupported options: build
+
+Creating network myapp_default
+Creating service myapp_myapp
+failed to create service myapp_myapp: Error response from daemon: rpc error: code = InvalidArgument desc = ContainerSpec: image reference must be provided
+
+$ docker build -t avis20/myapp .
+...
+$ docker push avis20/myapp
+...
+
+
+// запуск по одному экземпляру
+$ docker stack deploy -c docker-compose.yml myapp 
+Ignoring unsupported options: build
+
+Updating service myapp_myapp (id: jcy9053hzf5j77nwwdp3qnpz0)
+Updating service myapp_mynginx (id: 3wditfmqmlu0w1lweac2a9e13)
+Creating service myapp_myappredis
+
+// по ip виртуалок, можно достучатся до контейнеров
+$ docker-machine ls
+NAME   ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER     ERRORS
+dev1   *        virtualbox   Running   tcp://192.168.99.101:2376           v19.03.5   
+dev2   -        virtualbox   Running   tcp://192.168.99.102:2376           v19.03.5   
+
+// nginx
+$ curl 192.168.99.101
+...
+$ curl 192.168.99.102
+...
+
+// catalyst (при этом подтупливает, мб потому что дев сервер)
+$ curl 192.168.99.101:81
+...
+$ curl 192.168.99.102:81
+...
+
+// редис. Полная синхронизация...
+$ redis-cli -h 192.168.99.101
+192.168.99.101:6379> set test 1
+OK
+192.168.99.101:6379> 
+$ redis-cli -h 192.168.99.102
+192.168.99.102:6379> get test
+"1"
+192.168.99.102:6379> 
+
+
+// Увеличиваем кол-во!
+// 6 nginx-во
+$ docker service scale myapp_mynginx=6
+myapp_mynginx scaled to 6
+overall progress: 6 out of 6 tasks 
+1/6: running   [==================================================>] 
+2/6: running   [==================================================>] 
+3/6: running   [==================================================>] 
+4/6: running   [==================================================>] 
+5/6: running   [==================================================>] 
+6/6: running   [==================================================>] 
+verify: Service converged 
+
+// 4 редиса
+$ docker service scale myapp_myappredis=4
+myapp_myappredis scaled to 4
+overall progress: 4 out of 4 tasks 
+1/4: running   [==================================================>] 
+2/4: running   [==================================================>] 
+3/4: running   [==================================================>] 
+4/4: running   [==================================================>] 
+verify: Service converged 
+

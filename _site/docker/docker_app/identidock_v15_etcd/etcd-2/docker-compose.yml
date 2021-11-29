@@ -1,0 +1,15 @@
+version: '3'
+services:
+
+  etcd-1:
+    image: quay.io/coreos/etcd
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+      - "4001:4001"
+    environment:
+      HOSTA: '3.3.3.2'
+      HOSTB: '3.3.3.3'
+    volumes:
+      - ./start-coreos-etcd.sh:/start-coreos-etcd.sh
+    command: /start-coreos-etcd.sh

@@ -1,0 +1,12 @@
+
+note:
+  fonmix:player:monitoring:[Filial
+user1: 
+  name: vasya
+  age: 12
+  skils: [ perl, python, javascript ]
+# test_str: |-
+#   1
+#   2
+#   3
+# test: 1

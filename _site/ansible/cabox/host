@@ -1,0 +1,6 @@
+
+[cabox]
+host16.codeanyhost.com ansible_port=48582 ansible_user=cabox
+
+[identidock]
+host16.codeanyhost.com ansible_port=48582 ansible_user=cabox

@@ -1,0 +1,68 @@
+version: '3'
+services:
+
+  identiproxy:
+    build: ./identiproxy/
+    container_name: identiproxy
+    ports:
+      - "80:80"
+    links:
+      - "identidock"
+
+  identidock:
+    build: ./identidock/
+    container_name: identidock
+    environment:
+      RUN: PROD
+    volumes:
+      - ./identidock/app:/app
+    links:
+      - "dnmonster"
+      - "redis"
+
+  dnmonster:
+    image: amouat/dnmonster:1.0
+    container_name: identidnmonster
+
+  redis:
+    image: redis:3.0
+    container_name: identiredis
+
+  logspout:
+    image: amouat/logspout-logstash:1.0
+    container_name: identilogspout
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8000:80"
+    links:
+      - "logstash"
+    command: logstash://logstash:5000
+
+  logstash:
+    image: logstash:2.3.4
+    container_name: identilogstash
+    volumes:
+      - ./identilogs/logstash.2.3.4.conf:/etc/logstash.conf
+    environment:
+      LOGSPOUT: ignore
+    links:
+      - "elasticsearch"
+    command: -f /etc/logstash.conf
+
+  kibana:
+    image: kibana:4.6.6
+    container_name: identikibana
+    environment:
+      LOGSPOUT: ignore
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    links:
+      - "elasticsearch"
+    ports:
+      - "5601:5601"
+    
+  elasticsearch:
+    image: elasticsearch:2.4.0
+    container_name: identielastic
+    environment:
+      LOGSPOUT: ignore

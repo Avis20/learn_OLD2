@@ -1,0 +1,64 @@
+version: "2"
+services:
+  nginx:
+    image: nginx:latest
+    environment: 
+      NGINX_SERVER_NAME: docker_machine.local   
+    container_name: lemp_nginx
+    restart: always
+    links:
+      - php
+    volumes:
+      - ./DATA/html:/var/www/html/:ro
+      - ./DATA/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./DATA/nginx/conf.d:/etc/nginx/conf.d:ro
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - bridge
+  php:
+    image: php:latest
+    container_name: lemp_php
+    restart: always
+    volumes:
+      #- ./DATA/php-fpm/site.conf:/usr/local/etc/php-fpm.d:ro 
+      - ./DATA/html:/var/www/html
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - bridge
+    environment:
+      - DB_NAME=lemp_magento
+      - TABLE_PREFIX=lemp_
+      - DB_HOST=lemp
+      - DB_PASSWORD=magento
+      - PHP_HOST_NAME=localhost:9000
+  db:
+    image: mariadb:latest
+    container_name: lemp_mariadb
+    restart: always
+    volumes:
+      #- ./DATA/mariadb/my.cnf:/etc/mysql/my.cnf:ro  
+      - db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root666PW
+    networks:
+      - bridge
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  bridge:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.10.1.0/16
+         gateway: 172.10.1.1
+         aux_addresses:
+           nginx: 172.10.1.10
+           php: 172.10.1.20      
+           db: 172.10.1.30

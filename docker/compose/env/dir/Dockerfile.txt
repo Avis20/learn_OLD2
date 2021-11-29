@@ -1,0 +1,5 @@
+FROM ubuntu:bionic
+
+ENV MYENV=test
+
+CMD echo $MYENV

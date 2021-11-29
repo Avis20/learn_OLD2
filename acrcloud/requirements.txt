@@ -1,0 +1,6 @@
+python-Levenshtein
+fuzzywuzzy
+backports.csv
+requests
+openpyxl
+python-dateutil

@@ -1,0 +1,31 @@
+Vagrant.configure(2) do |config|
+    config.vm.box = "bento/ubuntu-16.04"
+    config.vm.synced_folder "./identi/", "/home/vagrant/project/"
+    config.vm.network "private_network", ip: "3.3.3.2", auto_config: false
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 2048
+        v.cpus = 1
+    end
+
+    # manual keys
+    config.vm.provision "file", source: "./id_rsa_keys/id_rsa.pub", destination: "~/.ssh/me.pub"
+    config.vm.provision "shell", run: "once", inline: <<-SHELL
+        cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
+    SHELL
+
+    # manual ip
+    config.vm.provision "shell", run: "always", inline: "ifconfig eth1 3.3.3.2 netmask 255.255.255.0 up"
+
+    config.vm.provision "shell", run: "once", inline: <<-SHELL
+        # Install docker and docker compose
+        sudo -i
+        apt-get update && apt-get install htop bash-completion
+        curl https://get.docker.com > /tmp/install.sh
+        chmod +x /tmp/install.sh
+        /tmp/install.sh
+        usermod -aG docker vagrant
+        service docker restart
+        curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+        chmod +x /usr/local/bin/docker-compose
+    SHELL
+end

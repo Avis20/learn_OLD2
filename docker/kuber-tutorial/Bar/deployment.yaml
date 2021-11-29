@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-myapp-bar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-myapp-bar
+  template:
+    metadata:
+      labels:
+        app: kube-myapp-bar
+    spec:
+      containers:
+        - name: kube-myapp-bar
+          image: avis20/myapp_bar:v2
+          ports:
+            - containerPort: 3002
+              protocol: TCP
