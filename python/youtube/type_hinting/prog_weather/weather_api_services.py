@@ -12,6 +12,7 @@ class WeatherType(Enum):
     FOG = "Туман"
     CLEAR = "Ясно"
     SNOW = "Снег"
+    CLOUDS = "Облачно"
 
 
 @dataclass
