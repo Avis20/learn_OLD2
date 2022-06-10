@@ -2,7 +2,9 @@
 
 from dataclasses import dataclass
 from subprocess import PIPE, Popen
+from typing import Literal
 from exceptions import ErrorGetCoordinates
+from settings import USE_ROUND_COORDS
 
 
 @dataclass
@@ -17,29 +19,59 @@ def get_gps_coordinates() -> Coordinates:
     """Функция возвращает координаты системы
     Возвращается именованный кортеж с шириной и долготой
     """
-    # Запускаем подпроцесс с получением координат
+    coordinates = _get_geo_coordinates()
+    return _round_coordinates(coordinates)
+
+
+def _get_geo_coordinates() -> Coordinates:
+    geo_output = _get_geo_output()
+    coordinates = _parse_coordinates(geo_output)
+    return coordinates
+
+
+def _get_geo_output() -> bytes:
     process = Popen(["get_geo.py"], shell=True, stdout=PIPE)
     (output, error) = process.communicate()
     exit_code = process.wait()
-    # Проверяем ошибку и код с которым завершился процесс
     if error is not None or exit_code != 0:
         raise ErrorGetCoordinates
-    # декодируем полученный результат т.к. процесс вернул байты
-    # удаляем пробелы с начала и конца строки
-    # приводим к нижнему регистру
-    # разбиваем строку на несколько
-    # Получаем список строк
-    output_lines = output.decode().strip().lower().split("\n")
-    latitude = longitude = None
-    for line in output_lines:
-        if line.startswith("latitude:"):
-            # Если удалось найти строку которая начинается с latitude, то
-            # разбиваем строку по пробелу и берем 2-й элемент. Приводим к float типу
-            # Также для longitude
-            latitude = float(line.split()[1])
-        if line.startswith("longitude:"):
-            longitude = float(line.split()[1])
-    return Coordinates(latitude=latitude, longitude=longitude)
+    return output
+
+
+def _parse_coordinates(geo_output: bytes) -> Coordinates:
+    try:
+        output = geo_output.decode().strip().lower().split("\n")
+    except UnicodeDecodeError:
+        raise ErrorGetCoordinates
+    return Coordinates(
+        latitude=_parse_coord(output, "latitude"),
+        longitude=_parse_coord(output, "longitude"),
+    )
+
+
+def _parse_coord(
+    output: list[str], coord_type: Literal["latitude"] | Literal["longitude"]
+) -> float:
+    for line in output:
+        if line.startswith(f"{coord_type}"):
+            return _parse_float_coordinate(line.split()[1])
+    else:
+        raise ErrorGetCoordinates
+
+
+def _parse_float_coordinate(value: str) -> float:
+    try:
+        return float(value)
+    except ValueError:
+        raise ErrorGetCoordinates
+
+
+def _round_coordinates(coondinates: Coordinates) -> Coordinates:
+    if not USE_ROUND_COORDS:
+        return coondinates
+    return Coordinates(
+        *map(lambda c: round(c, 1), [coondinates.latitude, coondinates.longitude])
+    )
 
 
 if __name__ == "__main__":
