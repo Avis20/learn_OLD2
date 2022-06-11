@@ -1,1 +1,1 @@
-USE_ROUND_COORDS = False
+ROUND_COORDS = None
