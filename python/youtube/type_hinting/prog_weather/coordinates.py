@@ -16,9 +16,7 @@ class Coordinates:
     # долгота
     longitude: float
 
-logging.basicConfig(format='->>> %(levelname)s: %(message)s\n', level=logging.DEBUG)
-logger = logging.getLogger()
-logger.addHandler(logging.StreamHandler())
+logger = logging.getLogger(__name__)
 
 def get_gps_coordinates() -> Coordinates:
     """Функция возвращает координаты системы
@@ -104,7 +102,8 @@ def _round_coordinates(coondinates: Coordinates) -> Coordinates:
 
 
 if __name__ == "__main__":
-    print("\n\n")
-    print(get_gps_coordinates())
-    print("\n\n")
-    # >>> Coordinates(latitude=55.7522, longitude=37.6156)
+    result = get_gps_coordinates()
+    print(result)
+    """
+    Coordinates(latitude=55.7858, longitude=37.6256)
+    """

@@ -1,31 +1,29 @@
 
 
-import random
+TEST_TUPLE = (1, 2)
+print(TEST_TUPLE)
+print(type(TEST_TUPLE))
+# >>> (1, 2)
+# >>> <class 'tuple'>
 
-def cube():
-    return (random.randint(1,6)+ random.randint(1,6))
+TEST_TUPLE2 = (1)
+print(TEST_TUPLE2)
+print(type(TEST_TUPLE2))
+# >>> 1
+# >>> <class 'int'>
 
-print(cube())
+TEST_MULTISTRING = (
+    "Hello "
+    "World"
+)
+print(TEST_MULTISTRING)
+print(type(TEST_MULTISTRING))
+# >>> Hello World
+# >>> <class 'str'>
 
-"""
-def plus_two(number: int) -> int:
-    print("start func plus_two")
-    return number + 2
-
-
-print(plus_two(2))
-
-# >>> start func plus_two
-# >>> 4
-
-# интерпретатор не проверяет типы входящих и возвращающих значений!
-print(plus_two("2"))
-
-# >>> start func plus_two
-# >>> Traceback (most recent call last):
-# >>>   File "/home/avis/develop/learn/python/youtube/type_hinting/main.py", line 11, in <module>
-# >>>     print(plus_two("2"))
-# >>>   File "/home/avis/develop/learn/python/youtube/type_hinting/main.py", line 3, in plus_two
-# >>>     return number + 2
-# >>> TypeError: can only concatenate str (not "int") to str
-"""
+# Но если сделать 2-й эл. пустым то будет tuple
+TEST_TWO = 1,
+print(TEST_TWO)
+print(type(TEST_TWO))
+# >>> (1,)
+# >>> <class 'tuple'>

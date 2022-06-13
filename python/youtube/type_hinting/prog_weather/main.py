@@ -1,7 +1,13 @@
 # main.py
+import logging
+
 from coordinates import get_gps_coordinates
 from weather_api_services import get_weather
 from weather_formatter import format_weather
+
+logging.basicConfig(format='\n->>> %(levelname)s: %(message)s\n', level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.StreamHandler())
 
 
 def main():
