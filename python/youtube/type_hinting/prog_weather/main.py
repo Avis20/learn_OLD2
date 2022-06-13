@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # main.py
 import logging
 
@@ -5,7 +6,7 @@ from coordinates import get_gps_coordinates
 from weather_api_services import get_weather
 from weather_formatter import format_weather
 
-logging.basicConfig(format='\n->>> %(levelname)s: %(message)s\n', level=logging.DEBUG)
+logging.basicConfig(format="\n->>> %(levelname)s: %(message)s\n", level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 
@@ -18,10 +19,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # >>> Weather(
-    # >>>     temperature=20,
-    # >>>     weather_type=<WeatherType.CLEAR: 'Ясно'>,
-    # >>>     sunrise=datetime.datetime(2022, 6, 5, 23, 19, 3),
-    # >>>     sunset=datetime.datetime(2022,6, 5, 23, 19, 3),
-    # >>>     city='Moscow')
-    # >>> Возвращает данные для печати погоды из структуры weather

@@ -3,5 +3,31 @@ from weather_api_services import Weather
 
 
 def format_weather(weather: Weather) -> str:
-    print(weather)
-    return "Возвращает данные для печати погоды из структуры weather"
+    """Возвращает данные для печати погоды из структуры weather"""
+    return (
+        f"{weather.city}, температура {weather.temperature}°C, "
+        f"{weather.weather_type.value}\n"
+        f"Восход: {weather.sunrise.strftime('%H:%S')}\n"
+        f"Закат: {weather.sunset.strftime('%H:%S')}\n"
+    )
+
+
+if __name__ == "__main__":
+    from datetime import datetime
+    from weather_api_services import WeatherType
+
+    result = format_weather(
+        Weather(
+            temperature=25,
+            weather_type=WeatherType.CLEAR,
+            sunrise=datetime.fromisoformat("2022-06-13 04:00:00"),
+            sunset=datetime.fromisoformat("2022-06-13 21:00:00"),
+            city="Moscow",
+        )
+    )
+    print(result)
+    """
+    Moscow, температура 25°C, Ясно
+    Восход: 04:00
+    Закат: 21:00
+    """

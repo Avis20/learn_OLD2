@@ -25,6 +25,7 @@ class WeatherType(Enum):
     CLEAR = "Ясно"
     SNOW = "Снег"
     CLOUDS = "Облачно"
+    MIST = "Туман"
 
 
 # Список кодов и типов погоды
@@ -35,6 +36,7 @@ openweather_types: dict = {
     "500": WeatherType.RAIN,
     "600": WeatherType.SNOW,
     "741": WeatherType.FOG,
+    "701": WeatherType.MIST,
     "800": WeatherType.CLEAR,
     "804": WeatherType.CLOUDS,
 }
@@ -119,7 +121,12 @@ def _parse_suntime(
 def _parse_weather_type(openweather_dict: dict) -> WeatherType:
     """Получение типа погоды из словаря"""
     try:
-        weather_type_id = str(openweather_dict.get("weather", [])[0].get("id", "0"))
+        weather_type = openweather_dict.get("weather", [])[0]
+        weather_type_desc, weather_type_alias = (
+            weather_type.get("description"),
+            weather_type.get("main"),
+        )
+        weather_type_id = str(weather_type.get("id", "0"))
     except (IndexError, KeyError):
         logger.error("Can't get weather type")
         raise ErrorAPIService
@@ -128,13 +135,15 @@ def _parse_weather_type(openweather_dict: dict) -> WeatherType:
         if weather_type_id.startswith(_id):
             return _weather_type
     else:
-        logger.error(f"Unknown weather type! weather_type_id={weather_type_id}")
+        logger.error(
+            f"Unknown weather type! id={weather_type_id}; desc={weather_type_desc}, alias={weather_type_alias}"
+        )
         raise ErrorAPIService
 
 
 def _parse_temperature(openweather_dict: dict) -> Celsius:
     """Получение температуры из словаря"""
-    return openweather_dict.get("main", {}).get("temp", 0)
+    return Celsius(openweather_dict.get("main", {}).get("temp", 0))
 
 
 if __name__ == "__main__":
