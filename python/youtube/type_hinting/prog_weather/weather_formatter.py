@@ -11,6 +11,16 @@ def format_weather(weather: Weather) -> str:
         f"Закат: {weather.sunset.strftime('%H:%S')}\n"
     )
 
+def dict_format_weather(weather: Weather) -> dict:
+    """Возвращает dict формат погоды из структуры Weather"""
+    return {
+        "temperature": f"{weather.temperature}°C",
+        "weather_type": weather.weather_type.value,
+        "sunrise": weather.sunrise,
+        "sunset": weather.sunset,
+        "city": weather.city,
+    }
+
 
 if __name__ == "__main__":
     from datetime import datetime

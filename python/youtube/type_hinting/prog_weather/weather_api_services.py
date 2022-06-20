@@ -38,6 +38,9 @@ openweather_types: dict = {
     "741": WeatherType.FOG,
     "701": WeatherType.MIST,
     "800": WeatherType.CLEAR,
+    "801": WeatherType.CLOUDS,
+    "802": WeatherType.CLOUDS,
+    "803": WeatherType.CLOUDS,
     "804": WeatherType.CLOUDS,
 }
 
@@ -147,7 +150,7 @@ def _parse_temperature(openweather_dict: dict) -> Celsius:
 
 
 if __name__ == "__main__":
-    result = get_weather(Coordinates(55.892357, 37.576324))
+    result = get_weather(Coordinates(55.790426, 37.589814))
     print(result)
     """
     Weather(

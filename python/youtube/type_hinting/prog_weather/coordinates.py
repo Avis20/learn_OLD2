@@ -3,11 +3,13 @@
 import logging
 from dataclasses import dataclass
 from subprocess import PIPE, Popen
-from threading import local
 from typing import Literal
 
 from exceptions import ErrorGetCoordinates
 from settings import ROUND_COORDS
+
+logger = logging.getLogger(__name__)
+
 
 @dataclass
 class Coordinates:
@@ -16,18 +18,18 @@ class Coordinates:
     # долгота
     longitude: float
 
-logger = logging.getLogger(__name__)
 
 def get_gps_coordinates() -> Coordinates:
-    """Функция возвращает координаты системы
-    Возвращается именованный кортеж с шириной и долготой
+    """
+        Функция возвращает координаты системы
+        Возвращается именованный кортеж с шириной и долготой
     """
     coordinates = _get_geo_coordinates()
     return _round_coordinates(coordinates)
 
 
 def _get_geo_coordinates() -> Coordinates:
-    """Внутреняя функция получения координат"""
+    """Внутренняя функция получения координат"""
     geo_output = _get_geo_output()
     coordinates = _parse_coordinates(geo_output)
     return coordinates
@@ -35,14 +37,17 @@ def _get_geo_coordinates() -> Coordinates:
 
 def _get_geo_output() -> bytes:
     """
-        Вызов программы получения кооринат
+        Вызов программы получения координат
         Возвращается строка с байтами программы get_geo.py
     """
     process = Popen(["get_geo.py"], shell=True, stdout=PIPE)
     (output, error) = process.communicate()
     exit_code = process.wait()
     if error is not None or exit_code != 0:
-        logger.critical(f"Error get coordinates: error=[{error}]; error_code=[{exit_code}]")
+        # logger.critical(f'Error get coordinates: error={error}; error_code={exit_code}')
+        logger.critical(
+            f"Error get coordinates: error={str(error)}; error_code={exit_code}"
+        )
         raise ErrorGetCoordinates
     return output
 
@@ -72,7 +77,6 @@ def _parse_coord(
         Функция выборки строки с координатам из входящего списка
         Тип может быть либо latitude либо longitude
     """
-    # Во вхоящих 
     for line in output:
         if line.startswith(f"{coord_type}"):
             return _parse_float_coordinate(line.split()[1])

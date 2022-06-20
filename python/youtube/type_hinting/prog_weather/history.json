@@ -1,0 +1,22 @@
+[
+  {
+    "date": "2022-06-20 23:20:52.555379",
+    "weather": {
+      "temperature": 14.08,
+      "weather_type": "WeatherType.CLOUDS",
+      "sunrise": "2022-06-20 03:44:06",
+      "sunset": "2022-06-20 21:17:53",
+      "city": "Mar’ina Roshcha"
+    }
+  },
+  {
+    "date": "2022-06-20 23:21:32.927785",
+    "weather": {
+      "temperature": "14.08°C",
+      "weather_type": "Облачно",
+      "sunrise": "2022-06-20 03:44:06",
+      "sunset": "2022-06-20 21:17:53",
+      "city": "Mar’ina Roshcha"
+    }
+  }
+]
