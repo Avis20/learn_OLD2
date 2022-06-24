@@ -2,7 +2,7 @@
 from weather_api_services import Weather
 
 
-def format_weather(weather: Weather) -> str:
+def format_weather(weather: str) -> str:
     """Возвращает данные для печати погоды из структуры weather"""
     return (
         f"{weather.city}, температура {weather.temperature}°C, "

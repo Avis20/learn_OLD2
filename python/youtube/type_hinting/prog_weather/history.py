@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 from weather_api_services import Weather
-from weather_formatter import dict_format_weather
+from weather_formatter import dict_format_weather, format_weather
 
 
 class WeatherStorage:

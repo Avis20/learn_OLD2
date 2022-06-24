@@ -1,8 +1,9 @@
 
+from typing import NamedTuple
 
-strings = ['a', 'b', 'c']
+class Employee(NamedTuple):
+    name: str
+    id: int = 3
 
-for st in strings:
-    st, strings[-1] = strings[-1], st
-
-print(strings)
+employee = Employee("Guido")
+assert employee.id == 3

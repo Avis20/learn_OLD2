@@ -1,32 +1,5 @@
-from dataclasses import dataclass
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
-
-@dataclass
-class User:
-    username: str
-    created_at: datetime
-    brithday: datetime | None = None
-
-
-def validate_user_on_server(_):
-    pass
-
-
-def check_username(_):
-    pass
-
-
-def validate_user(user: User):
-    """Валидация пользователя
-
-    Args:
-        user (User): _description_
-    """
-    validate_user_on_server(user)
-    check_username(user)
-
-
-user_id = 123
-# IDE подскажет ошибку т.к. ожидается объект User
-validate_user(user_id)
+print(datetime.now() - relativedelta(years=32))
+# >>> 1990-06-24 18:32:35.875711
