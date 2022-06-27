@@ -38,5 +38,25 @@
       "sunset": "2022-06-24 21:18:17",
       "city": "Москва"
     }
+  },
+  {
+    "date": "2022-06-26 14:04:46.306459",
+    "weather": {
+      "temperature": "29.26°C",
+      "weather_type": "Ясно",
+      "sunrise": "2022-06-26 03:45:58",
+      "sunset": "2022-06-26 21:18:27",
+      "city": "Mar’ina Roshcha"
+    }
+  },
+  {
+    "date": "2022-06-26 16:20:02.070891",
+    "weather": {
+      "temperature": "29.89°C",
+      "weather_type": "Ясно",
+      "sunrise": "2022-06-26 03:45:58",
+      "sunset": "2022-06-26 21:18:27",
+      "city": "Mar’ina Roshcha"
+    }
   }
 ]
