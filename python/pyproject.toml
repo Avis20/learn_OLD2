@@ -7,6 +7,9 @@ authors = ["Орлов Ярослав <y.orlov@fonmix.ru>"]
 [tool.poetry.dependencies]
 python = "^3.10"
 requests = "^2.28.0"
+SQLAlchemy = "^1.4.40"
+psycopg-binary = "^3.0.16"
+psycopg2-binary = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^22.6.0", allow-prereleases = true}
