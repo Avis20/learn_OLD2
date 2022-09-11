@@ -1,0 +1,72 @@
+[
+  {
+    "date": "2022-06-20 23:20:52.555379",
+    "weather": {
+      "temperature": 14.08,
+      "weather_type": "WeatherType.CLOUDS",
+      "sunrise": "2022-06-20 03:44:06",
+      "sunset": "2022-06-20 21:17:53",
+      "city": "Mar’ina Roshcha"
+    }
+  },
+  {
+    "date": "2022-06-20 23:21:32.927785",
+    "weather": {
+      "temperature": "14.08°C",
+      "weather_type": "Облачно",
+      "sunrise": "2022-06-20 03:44:06",
+      "sunset": "2022-06-20 21:17:53",
+      "city": "Mar’ina Roshcha"
+    }
+  },
+  {
+    "date": "2022-06-24 17:49:25.329362",
+    "weather": {
+      "temperature": "26.11°C",
+      "weather_type": "Ясно",
+      "sunrise": "2022-06-24 03:45:24",
+      "sunset": "2022-06-24 21:18:16",
+      "city": "Москва"
+    }
+  },
+  {
+    "date": "2022-06-24 17:50:51.503637",
+    "weather": {
+      "temperature": "26.14°C",
+      "weather_type": "Ясно",
+      "sunrise": "2022-06-24 03:45:22",
+      "sunset": "2022-06-24 21:18:17",
+      "city": "Москва"
+    }
+  },
+  {
+    "date": "2022-06-26 14:04:46.306459",
+    "weather": {
+      "temperature": "29.26°C",
+      "weather_type": "Ясно",
+      "sunrise": "2022-06-26 03:45:58",
+      "sunset": "2022-06-26 21:18:27",
+      "city": "Mar’ina Roshcha"
+    }
+  },
+  {
+    "date": "2022-06-26 16:20:02.070891",
+    "weather": {
+      "temperature": "29.89°C",
+      "weather_type": "Ясно",
+      "sunrise": "2022-06-26 03:45:58",
+      "sunset": "2022-06-26 21:18:27",
+      "city": "Mar’ina Roshcha"
+    }
+  },
+  {
+    "date": "2022-07-26 16:07:58.749050",
+    "weather": {
+      "temperature": "28.9°C",
+      "weather_type": "Облачно",
+      "sunrise": "2022-07-26 04:23:23",
+      "sunset": "2022-07-26 20:48:27",
+      "city": "Москва"
+    }
+  }
+]
