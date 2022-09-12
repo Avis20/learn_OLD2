@@ -18,12 +18,12 @@ logger.setFormatter(fmt)
 
 logger_db = logging.getLogger("sqlalchemy")
 logger_db.setLevel(logging.DEBUG)
-logger_db.addHandler(logger)
+# logger_db.addHandler(logger)
 
 # Мета информация для БД
 metadata = sa.MetaData()
 BaseModel = declarative_base(metadata=metadata)
-engine = sa.create_engine("postgresql+psycopg2://user:pass@localhost:5432/db_name")
+engine = sa.create_engine("postgresql+psycopg2://user:pass@localhost:5432/db_name", echo=True)
 Session = sessionmaker(bind=engine)
 
 
@@ -119,9 +119,11 @@ def one_and_two_user():
         assert u1.name == u2.name
 
 if __name__ == "__main__":
-    BaseModel.metadata.create_all(engine)
-    # get_users()
-    one_and_two_user()
+    res = BaseModel.metadata.create_all(engine)
+    print("AAAAAAAAAAA")
+    print(res)
+    get_users()
+    # one_and_two_user()
 """
     USERS_RECORDS = [
         {
