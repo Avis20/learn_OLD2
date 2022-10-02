@@ -4,6 +4,7 @@ class Solution:
     def isPalindrome(self, x: int) -> bool:
         if x < 0:
             return False
+
         numbers = list()
         while x > 0:
             x, num = divmod(x, 10)

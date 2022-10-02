@@ -7,6 +7,10 @@ class Solution:
 
 if __name__ == "__main__":
     """
+        Ссылка:
+        Дано:
+        Необходимо:
+        Примечание:
     """
     solution = Solution()
-    solution.x
+    print(solution.x())
