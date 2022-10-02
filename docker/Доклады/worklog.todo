@@ -1,0 +1,316 @@
+
+
+
+
+
+
+Этап 1:
+```
+mkdir hello-world
+cd hello-world/
+
+code .
+```
+
+Создаем index.html
+
+x Пишем
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+</head>
+<body>
+    <h2>Hello world</h2>
+</body>
+</html>
+```
+
+Этап 2:
+
+Что бы работало на любой системе где есть docker, нужно засунуть наше приложение в контейнер
+
+Создаем Dockerfile
+
+Самое первое что должно быть это From, FROM - это то какой базовый образ использовать, ubuntu, nodejs, python, postgres, mongo etc
+
+
+x Пишем
+```
+FROM ubuntu
+```
+
+
+Собираем образ:
+```
+docker build . -t my_ubuntu
+
+docker image ls | grep ubuntu
+```
+
+
+Откуда взялся ubuntu?:
+https://hub.docker.com/
+
+контейнер есть но он не запущен
+Проверить что какие контейнеры запущены можно через 
+
+```
+docker ps
+Дает доп вывод
+docker ps -a
+```
+
+Запускаем 
+```
+docker run my_ubuntu
+```
+
+Ничего не происходит - хорошо
+
+
+Добавляем в Dockerfile 
+
+x Пишем
+```
+CMD ls
+```
+
+
+Снова запускаем, видем результат
+```
+docker run my_ubuntu
+
+Проверяем список 
+docker ps -a
+```
+
+
+Что бы контейнер работал и не завершался после выполнения команды, нужно его повесить на какой-то процесс
+Например nginx
+
+
+x Пишем
+```
+
+RUN apt-get update
+RUN apt-get install -y nginx
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+Проверяем через docker ps
+
+Контейнер запущен, но до индексной странице не достучаться. Почему?
+Потому что контейнер полностью изолирован и нужно пробросить порты
+
+```
+docker run -p 80:80 my_ubuntu
+```
+
+ВАЖНО не перепутать последовательность
+
+
+Хорошо, контейнер есть, веб сервер тоже, теперь добавим index.html
+
+
+x Пишем
+```
+COPY index.html /var/www/html/index.html
+
+```
+
+
+Этап 3:
+
+localhost конечно прикольно, но хотелось бы показать наш сайт всему интернету
+
+Что мы хотим? Допустим у нас есть некий сайт festina-lente.xyz
+
+Хотим чтобы index.html открывался по http://festina-lente.xyz/
+Что для этого надо:
+1. Мы можем повторить все тоже самое что и локально сделали
+2. Собранный образ запушить на какой нибудь сервер, и потом скачать его
+
+2-й вариант предпочтительнее т.к. меньше вероятности ошибиться
+
+
+Где же будет находиться сервер под наши образы? По умолчанию это тот же https://hub.docker.com/
+
+Собираем и навешиваем тег
+
+```
+docker build . -t avis20/my_ubuntu
+```
+
+Пушим 
+```
+docker push avis20/my_ubuntu
+```
+
+Не получается... Логинимся!
+
+```
+docker login
+```
+
+Этап 4:
+
+
+Есть виртуалка на firstvds
+https://my.firstvds.ru/billmgr
+
+
+Я его когда-то купил и прописал только ns1.firstvds.ru, ns2.firstvds.ru
+https://ap.www.namecheap.com/domains/domaincontrolpanel/festina-lente.xyz/domain
+
+Заходим на сервер 
+
+ssh root@83.220.175.90
+
+
+Устанавливаем docker 
+
+```
+# Скачиваем скрипт по установки
+curl https://get.docker.com > /tmp/install.sh
+# Даем права на исполнение
+chmod +x /tmp/install.sh
+# Запускаем установочник
+/tmp/install.sh
+# После установки проверяем версию докера чтобы проверить все ли ок установилось
+docker -v
+
+# Если будет ошибка permission denied (ошибка доступа), то запускать через sudo
+sudo docker -v
+```
+
+Скачиваем образ и запускаем
+
+```
+docker pull avis20/my_ubuntu
+docker run -p 80:80 avis20/my_ubuntu
+```
+
+Проверяем
+
+
+http://83.220.175.90/
+http://festina-lente.xyz/
+
+Важно у кого арендуете сервер, прописать на какие домены будет отвечать сервер
+
+**Вход в панель : **https://msk-dns2.hoztnode.net/dnsmgr
+
+Этап 5 чуть более сложнее приложение:
+
+
+Допустим нам нужно что-то более сложное чем hello world
+
+
+
+
+
+
+
+
+Создадим main.py
+
+poetry init
+
+poetry add fastapi uvicorn
+
+```
+from uvicorn import run
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get('/user')
+def get_user():
+    return {
+        "user": {
+            "id": 1,
+            "name": "someone"
+        }
+    }
+
+
+if __name__ == "__main__":
+    run("main:app", host="0.0.0.0", port=5000, reload=True)
+
+```
+
+
+http://0.0.0.0:5000/docs#/default/get_user_user_get
+
+
+
+Dockerfile в backend
+
+```
+FROM python:3.10-slim
+
+WORKDIR /app
+# копируем и уст. зависимости 
+
+ADD pyproject.toml .
+RUN pip install poetry
+RUN poetry install
+
+COPY . /app
+
+CMD ["poetry", "run", "python", "main.py"]
+```
+
+
+
+
+
+```
+docker build . -t test-backend
+
+```
+
+
+
+
+
+```
+sudo npm instal -g @vue/cli
+vue create frontend
+```
+
+
+```
+npm install --save axios
+
+
+```
+
+
+Добавим Dockerfile
+
+x Пишем
+```
+FROM node:lts-alpine
+
+WORKDIR /data/
+
+COPY package.json /data/
+
+RUN npm install
+
+COPY . /data/app/
+WORKDIR /data/app/
+
+CMD ["npm", "run", "serve"]
+```
+
+```
+docker build . -t test-vue
+```
+

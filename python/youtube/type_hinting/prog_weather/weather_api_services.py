@@ -27,6 +27,8 @@ class WeatherType(Enum):
     CLOUDS = "Облачно"
     MIST = "Туман"
 
+WeatherType.name('THUNDERSTORM')
+
 
 # Список кодов и типов погоды
 # https://openweathermap.org/weather-conditions
